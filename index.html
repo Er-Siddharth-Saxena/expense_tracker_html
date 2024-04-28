@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form onsubmit="handleSubmit(event)">
+        <label>Choose Expense Amount:</label>
+        <input type="number" id="expense">
+        <label>Enter Description:</label>
+        <input type="text" id="description">
+        <label>Enter Category:</label>
+        <select id="category" >
+
+            <option value="select">Select</option>
+            <option value="fuel">fuel</option>
+            <option value="food">food</option>
+            <option value="electricity">electricity</option>
+            <option value="movies">movies</option>
+        </select>
+        <button type="submit">Add Expense</button>
+        <ul id="list"></ul>
+    </form>
+    
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault(); // Prevent form submission from reloading the page
+            
+            const exp = document.getElementById('expense').value;
+            const des = document.getElementById('description').value;
+            const cat = document.getElementById('category').value;
+
+            document.getElementById('expense').value='';
+            document.getElementById('description').value='';
+            document.getElementById('category').value='';
+
+            const list = document.getElementById('list');
+            const addli = document.createElement('li');
+            const content = document.createElement('h2');
+            const text=`${exp}-${des}-${cat}`;
+            
+            localStorage.setItem('expense',text);
+            content.innerText = localStorage.getItem('expense');
+            
+            addli.appendChild(content);
+            list.appendChild(addli);
+  
+
+            const dlt=document.createElement('button');
+            dlt.innerHTML='Delete';
+            addli.appendChild(dlt);
+            dlt.onclick=function(){list.removeChild(addli)};
+
+            const edit=document.createElement('button');
+            edit.innerHTML='edit';
+            addli.appendChild(edit);
+            edit.onclick=function(){
+                document.getElementById('expense').value=exp;
+                document.getElementById('description').value=des;
+                document.getElementById('category').value=cat;
+                list.removeChild(addli)
+            }
+        }
+    </script>
+</body>
+</html>
